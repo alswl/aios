@@ -13,8 +13,6 @@ import (
 	"time"
 
 	"github.com/briandowns/spinner"
-	ghTerm "github.com/cli/go-gh/v2/pkg/term"
-	"github.com/cli/safeexec"
 	"github.com/google/shlex"
 	"github.com/mattn/go-colorable"
 	"github.com/mattn/go-isatty"
@@ -212,7 +210,7 @@ func (s *IOStreams) StartPager() error {
 		pagerEnv = append(pagerEnv, "LV=-c")
 	}
 
-	pagerExe, err := safeexec.LookPath(pagerArgs[0])
+	pagerExe, err := exec.LookPath(pagerArgs[0])
 	if err != nil {
 		return err
 	}
@@ -392,7 +390,7 @@ func (s *IOStreams) TempFile(dir, pattern string) (*os.File, error) {
 }
 
 func System() *IOStreams {
-	terminal := ghTerm.FromEnv()
+	terminal := FromEnv()
 
 	var stdout fileWriter = os.Stdout
 	// On Windows with no virtual terminal processing support, translate ANSI escape
@@ -473,7 +471,7 @@ func Test() (*IOStreams, *bytes.Buffer, *bytes.Buffer, *bytes.Buffer) {
 }
 
 func isTerminal(f *os.File) bool {
-	return ghTerm.IsTerminal(f) || isCygwinTerminal(f.Fd())
+	return IsTerminal(f) || isCygwinTerminal(f.Fd())
 }
 
 func isCygwinTerminal(fd uintptr) bool {
@@ -522,4 +520,3 @@ type fdReader struct {
 func (r *fdReader) Fd() uintptr {
 	return r.fd
 }
-
