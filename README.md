@@ -15,3 +15,5 @@ import "github.com/alswl/aios"
 
 ios, stdin, stdout, stderr := aios.Test()
 ```
+
+Read [MANUAL.md](./MANUAL.md) for more details please.
